@@ -3,67 +3,79 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mshazaib <mshazaib@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zaibi <zaibi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/10 19:42:20 by mshazaib          #+#    #+#             */
-/*   Updated: 2023/09/10 20:43:18 by mshazaib         ###   ########.fr       */
+/*   Created: 2023/09/12 00:00:52 by zaibi             #+#    #+#             */
+/*   Updated: 2023/09/12 00:00:53 by zaibi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+
+
 #include "get_next_line.h"
 
-// --- reads and puts it in a temp until it founds a new line, 
-char 	read_line(int fd, char *buf, char *string)
+char	*read_line(int fd, char *buf, char *string)
 {
-	int readlines;
-	char  *temp;
+	int		readlines;
+	char	*temp;
 
 	readlines = 1;
-	
-	while(readlines != '\0')
+	while (readlines != '\0')
 	{
-		//read the fd
 		readlines = read(fd, buf, BUFFER_SIZE);
-		//checks
-		if(readlines < 0)
-			return ;
-		//null terminate
+		if (readlines == -1)
+			return (0);
+		else if (readlines == 0)
+			break ;
 		buf[readlines] = '\0';
-		//checks
-		if(!string)
-			string = NULL;
-		//swap with temp
+		if (!string)
+			string = ft_strdup("");
 		temp = string;
-		//join the strings by buf
 		string = ft_strjoin(temp, buf);
-		//free the goblin
 		free(temp);
 		temp = NULL;
-		//if it finds endline break so it can return the string
-		if(ft_strchr('\n', buf))
+		if (ft_strchr(buf, '\n'))
 			break ;
 	}
-	return(string);
-	
+	return (string);
 }
-//-- extract a line given by read_line until the first newline, then should return the line
-char *get_next_line(int fd)
-{
-	static char *string;
-	char *buf;
-	char *line;
 
-	if(fd < 0 || BUFFER_SIZE < 0)
+char	*extract(char *line)
+{
+	size_t	count;
+	char	*string;
+
+	count = 0;
+	while (line[count] != '\n' && line[count] != '\0')
+		count++;
+	if (line[count] == '\0' || line[1] == '\0')
+		return (0);
+	string = ft_substr(line, count + 1, ft_strlen(line) - count);
+	if (*string == '\0')
+	{
+		free(string);
+		string = NULL;
+	}
+	line[count + 1] = '\0';
+	return (string);
+}
+
+char	*get_next_line(int fd)
+{
+	static char	*string;
+	char		*buf;
+	char		*line;
+
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (0);
+	buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (!buf)
 		return (NULL);
-	buf = malloc(sizeof(char) * BUFFER_SIZE + 1);
-	if(!buf)
-		return (NULL);
-	// cpy line(fd, line, string)
-	line = cpy_line(fd, buf, string);
+	line = read_line(fd, buf, string);
 	free(buf);
 	buf = NULL;
 	if (!line)
 		return (NULL);
-
-	
+	string = extract(line);
+	return (line);
 }

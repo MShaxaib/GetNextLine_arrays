@@ -3,88 +3,107 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mshazaib <mshazaib@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zaibi <zaibi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 19:43:00 by mshazaib          #+#    #+#             */
-/*   Updated: 2023/09/10 20:35:45 by mshazaib         ###   ########.fr       */
+/*   Updated: 2023/09/11 23:59:05 by zaibi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
+//^	---	moddifed string join
+
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	size_t	len1;
-	size_t	len2;
-	size_t	total_len;
-	char	*result;
-
-	len1 = ft_strlen(s1);
-	len2 = ft_strlen(s2);
-	total_len = len1 + len2 + 1;
-	result = (char *)malloc(total_len);
-	if (result != NULL)
-	{
-		ft_strlcpy(result, s1, total_len);
-		ft_strlcat(result, s2, total_len);
-	}
-	return (result);
-}
-char	*ft_strcpy(char *dest, char *src)
-{
-	int	i;
+	int		i;
+	int		j;
+	char	*str;
 
 	i = 0;
-	while (src[i] != '\0')
+	j = 0;
+	str = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (str == NULL)
+		return (NULL);
+	while (s1[i] != '\0')
 	{
-		dest[i] = src[i];
+		str[i] = s1[i];
 		i++;
 	}
-	dest[i] = '\0';
-	return (dest);
-}
-
-char	*ft_strdup(char *src)
-{
-	char	*str;
-	size_t	len;
-
-	len = ft_strlen(src) + 1;
-	str = (char *)malloc(len);
-	if (str == NULL)
+	while (s2[j] != '\0')
 	{
-		return (NULL);
+		str[i + j] = s2[j];
+		j++;
 	}
-	str = ft_strcpy(str, src);
+	str[i + j] = '\0';
 	return (str);
 }
-size_t	ft_strlen(char const *str)
+
+//^ --- modified string duplicate
+
+char	*ft_strdup(const char *src)
+{
+	int i;
+	int j;
+	char *str;
+
+	i = 0;
+	j = ft_strlen(src);
+	str = (char *)malloc(sizeof(*src) * (j + 1));
+	while(i < j)
+	{
+		str[i] = src[i];
+		i++;
+	}
+	str[i] = '\0';
+	return(str);
+}
+
+int	ft_strlen(char const *str)
 {
 	int	i;
 
 	i = 0;
-	while (str[i] != '\0')
-	{
+	while (str[i])
 		i++;
-	}
 	return (i);
 }
+
+//^ --- modified String character
+
 char	*ft_strchr(const char *s, int c)
 {
 	while (*s)
 	{
-		if (*s == (char)c)
-		{
+		if (*s == c)
 			return ((char *)s);
-		}
 		s++;
 	}
-	if (*s == (char)c)
-	{
+	if (c == '\0')
 		return ((char *)s);
-	}
-	else
-		return (NULL);
+	return (0);
 }
 
+char *ft_substr(const char *s, unsigned int start, size_t len)
+{
+	size_t i;
+	size_t j;
+	char *str;
 
+	str = (char *)malloc(sizeof(*s) * (len + 1));
+	if(str == 0)
+		return(NULL);
+	i = 0;
+	j = 0;
+	while(s[i])
+	{
+		if(i >= start && j < len)
+		{
+			str[j] = s[i];
+			j++;
+		}
+		i++;
+	}
+	str[j] = 0;
+	return(str);
+}
