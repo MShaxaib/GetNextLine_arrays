@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mshazaib <mshazaib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/12 00:00:52 by zaibi             #+#    #+#             */
-/*   Updated: 2023/09/12 18:53:47 by mshazaib         ###   ########.fr       */
+/*   Created: 2023/09/12 18:54:01 by mshazaib          #+#    #+#             */
+/*   Updated: 2023/09/12 19:04:04 by mshazaib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*read_line(int fd, char *buf, char *str)
 {
@@ -58,7 +58,7 @@ char	*extract(char *line)
 
 char	*get_next_line(int fd)
 {
-	static char	*str;
+	static char	*str[1024];
 	char		*buf;
 	char		*line;
 
@@ -66,21 +66,21 @@ char	*get_next_line(int fd)
 	if (fd < 0 || BUFFER_SIZE <= 0 || BUFFER_SIZE >= INT_MAX || read(fd, buf,
 			0) == -1)
 	{
-		if (str)
+		if (str[fd])
 		{
-			free(str);
-			str = NULL;
+			free(str[fd]);
+			str[fd] = NULL;
 		}
 		return (0);
 	}
 	buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buf)
 		return (0);
-	line = read_line(fd, buf, str);
+	line = read_line(fd, buf, str[fd]);
 	free(buf);
 	buf = NULL;
 	if (!line)
 		return (NULL);
-	str = extract(line);
+	str[fd] = extract(line);
 	return (line);
 }
