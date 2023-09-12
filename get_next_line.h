@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaibi <zaibi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: clear <clear@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 19:42:53 by mshazaib          #+#    #+#             */
-/*   Updated: 2023/09/11 23:53:27 by zaibi            ###   ########.fr       */
+/*   Updated: 2023/09/12 09:44:31 by clear            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,20 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <string.h>
+# include <limits.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1000000
 # endif
 
+//! Get Next Line functions
+
 char *get_next_line(int fd);
+char	*read_line(int fd, char *buf, char *str);
+char	*extract(char *line);
+
+//! Get Next Line helper functions
+
 int	ft_strlen(char const *str);
 char	*ft_strdup(const char *src);
 char	*ft_strjoin(char const *s1, char const *s2);
