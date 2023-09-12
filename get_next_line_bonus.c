@@ -6,7 +6,7 @@
 /*   By: mshazaib <mshazaib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 18:54:01 by mshazaib          #+#    #+#             */
-/*   Updated: 2023/09/12 19:04:04 by mshazaib         ###   ########.fr       */
+/*   Updated: 2023/09/12 20:41:59 by mshazaib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ char	*get_next_line(int fd)
 
 	buf = NULL;
 	if (fd < 0 || BUFFER_SIZE <= 0 || BUFFER_SIZE >= INT_MAX || read(fd, buf,
-			0) == -1)
+			0) == -1 || fd > 1024)
 	{
 		if (str[fd])
 		{
