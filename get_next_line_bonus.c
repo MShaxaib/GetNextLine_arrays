@@ -6,7 +6,7 @@
 /*   By: mshazaib <mshazaib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 18:54:01 by mshazaib          #+#    #+#             */
-/*   Updated: 2023/09/12 20:41:59 by mshazaib         ###   ########.fr       */
+/*   Updated: 2023/09/14 20:03:13 by mshazaib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ char	*get_next_line(int fd)
 		}
 		return (0);
 	}
-	buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	buf = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buf)
 		return (0);
 	line = read_line(fd, buf, str[fd]);

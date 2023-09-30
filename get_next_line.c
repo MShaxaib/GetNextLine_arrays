@@ -6,7 +6,7 @@
 /*   By: mshazaib <mshazaib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 00:00:52 by zaibi             #+#    #+#             */
-/*   Updated: 2023/09/12 18:53:47 by mshazaib         ###   ########.fr       */
+/*   Updated: 2023/09/30 16:27:09 by mshazaib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,17 +42,18 @@ char	*extract(char *line)
 	char	*str;
 
 	count = 0;
-	while (line[count] != '\n' && line[count] != '\0')
-		count++;
 	if (line[count] == '\0' || line[1] == '\0')
 		return (0);
+	while (line[count] != '\n' && line[count] != '\0')
+		count++;
 	str = ft_substr(line, count + 1, ft_strlen(line) - count);
 	if (*str == '\0')
 	{
 		free(str);
 		str = NULL;
 	}
-	line[count + 1] = '\0';
+	if (line[count])
+		line[count + 1] = '\0';
 	return (str);
 }
 
@@ -63,17 +64,17 @@ char	*get_next_line(int fd)
 	char		*line;
 
 	buf = NULL;
-	if (fd < 0 || BUFFER_SIZE <= 0 || BUFFER_SIZE >= INT_MAX || read(fd, buf,
-			0) == -1)
+	if (fd < 0 || BUFFER_SIZE <= 0 || BUFFER_SIZE >= INT_MAX || read(fd,
+			buf, 0) == -1)
 	{
 		if (str)
 		{
 			free(str);
 			str = NULL;
 		}
-		return (0);
+		return (NULL);
 	}
-	buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	buf = malloc(sizeof(char) * ((size_t)BUFFER_SIZE + 1));
 	if (!buf)
 		return (0);
 	line = read_line(fd, buf, str);
