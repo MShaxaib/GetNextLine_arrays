@@ -73,7 +73,7 @@ char	*get_next_line(int fd)
 		}
 		return (0);
 	}
-	buf = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	buf = malloc(sizeof(char) * ((size_t)BUFFER_SIZE + 1));
 	if (!buf)
 		return (0);
 	line = read_line(fd, buf, str[fd]);
